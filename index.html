@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>Chronos Pro v2 • ប្រព័ន្ធកត់ត្រាសកម្មភាពតាមប្រភេទផ្នែក - លោកគ្រូ ចាន់ សុខហេង</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Kantumruy Pro, Moul, & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Moul&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Firebase SDKs for Cloud Sync across devices -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Kantumruy Pro"', '"Plus Jakarta Sans"', 'sans-serif'],
+                        moul: ['"Moul"', 'serif'],
+                    },
+                    colors: {
+                        gold: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            200: '#fde68a',
+                            300: '#fcd34d',
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            700: '#b45309',
+                            800: '#92400e',
+                            900: '#78350f',
+                            950: '#451a03',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .bg-luxury-dark {
+            background: radial-gradient(circle at 50% 10%, #1c1408 0%, #0d0b07 55%, #050402 100%);
+        }
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #fef08a 0%, #facc15 35%, #eab308 60%, #ca8a04 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gold-card {
+            background: linear-gradient(145deg, rgba(30, 24, 15, 0.90) 0%, rgba(15, 12, 7, 0.95) 100%);
+            border: 1px solid rgba(234, 179, 8, 0.35);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(254, 240, 138, 0.15);
+            backdrop-filter: blur(16px);
+        }
+        .gold-card:hover {
+            border-color: rgba(250, 204, 21, 0.75);
+            box-shadow: 0 12px 35px rgba(234, 179, 8, 0.18), inset 0 1px 1px rgba(254, 240, 138, 0.3);
+        }
+        .gold-button {
+            background: linear-gradient(135deg, #fef08a 0%, #eab308 50%, #b45309 100%);
+            color: #1c1408;
+            box-shadow: 0 4px 15px rgba(202, 138, 4, 0.35);
+            transition: all 0.25s ease;
+        }
+        .gold-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(202, 138, 4, 0.55);
+            filter: brightness(1.08);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.03);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(234, 179, 8, 0.4);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-luxury-dark text-slate-100 min-h-screen font-sans flex flex-col justify-between">
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-40 bg-black/60 backdrop-blur-xl border-b border-amber-500/20 shadow-lg">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3.5">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-amber-500 via-yellow-400 to-amber-700 p-0.5 shadow-lg shadow-amber-500/20 shrink-0">
+                    <div class="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center text-amber-400 text-lg font-bold">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="font-bold text-base sm:text-lg leading-tight gold-gradient-text">
+                            Chronos Pro • កំណត់ត្រាសកម្មភាព
+                        </h1>
+                        <span class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-300 bg-emerald-950/80 px-2.5 py-0.5 rounded-full border border-emerald-500/40">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                            Cloud Sync
+                        </span>
+                    </div>
+                    <p class="text-[11px] text-amber-200/70 font-medium">
+                        គ្រប់គ្រងសកម្មភាពតាមប្រភេទផ្នែក • អ្នកប្រើប្រាស់៖ <strong class="text-amber-400">លោកគ្រូ ចាន់ សុខហេង</strong>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Header Actions -->
+            <div class="flex items-center gap-2">
+                <button onclick="openManageDeptsModal()" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-bold flex items-center gap-1.5 transition" title="គ្រប់គ្រងប្រភេទផ្នែក">
+                    <i class="fa-solid fa-sliders"></i>
+                    <span class="hidden sm:inline">គ្រប់គ្រងផ្នែក</span>
+                </button>
+                <button onclick="openActivityModal()" class="gold-button px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-lg">
+                    <i class="fa-solid fa-plus text-sm"></i>
+                    <span>កត់ត្រាថ្មី</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 space-y-6">
+
+        <!-- Statistics & Department Tabs Filter Panel -->
+        <div class="gold-card rounded-[2rem] p-5 sm:p-8 space-y-6 relative overflow-hidden">
+            <div class="absolute -right-12 -top-12 w-48 h-48 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-amber-500/20 pb-5">
+                <div class="space-y-1">
+                    <span class="text-[11px] font-bold uppercase tracking-widest text-amber-400 flex items-center gap-1.5">
+                        <i class="fa-solid fa-chart-pie"></i> ប្រព័ន្ធកំណត់ត្រាសកម្មភាពជីវិត និងការងារ
+                    </span>
+                    <h2 class="font-moul text-lg sm:text-2xl text-white leading-relaxed">
+                        តម្រៀបតាមប្រភេទផ្នែក (Categories)
+                    </h2>
+                    <p class="text-xs text-slate-400">
+                        ចុចជ្រើសរើសផ្នែកនីមួយៗ ឬបន្ថែមផ្នែកថ្មីតាមតម្រូវការប្រចាំថ្ងៃរបស់អ្នក។
+                    </p>
+                </div>
+
+                <!-- Stats Badges -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 shrink-0">
+                    <div class="bg-black/50 px-4 py-3 rounded-2xl border border-amber-500/30 text-center">
+                        <span class="text-[10px] text-amber-300 font-medium block">សកម្មភាពសរុប</span>
+                        <strong id="statTotal" class="text-lg font-bold text-white font-mono">0</strong>
+                    </div>
+                    <div class="bg-black/50 px-4 py-3 rounded-2xl border border-amber-500/30 text-center">
+                        <span class="text-[10px] text-emerald-300 font-medium block">ផ្នែកសរុប</span>
+                        <strong id="statDepts" class="text-lg font-bold text-emerald-400 font-mono">0</strong>
+                    </div>
+                    <div class="bg-black/50 px-4 py-3 rounded-2xl border border-amber-500/30 text-center col-span-2 sm:col-span-1">
+                        <span class="text-[10px] text-cyan-300 font-medium block">ថ្ងៃនេះ</span>
+                        <strong id="statToday" class="text-lg font-bold text-cyan-400 font-mono">0</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Department Category Pills / Tabs Bar -->
+            <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                    <label class="text-xs font-semibold text-amber-200">ជ្រើសរើសប្រភេទផ្នែក៖</label>
+                    <button onclick="openManageDeptsModal()" class="text-[11px] text-amber-400 hover:text-amber-300 font-bold flex items-center gap-1">
+                        <i class="fa-solid fa-plus-circle"></i> បន្ថែមផ្នែកថ្មី
+                    </button>
+                </div>
+                <div id="deptTabsContainer" class="flex items-center gap-2 overflow-x-auto pb-2 custom-scrollbar">
+                    <!-- Rendered dynamically -->
+                </div>
+            </div>
+
+            <!-- Secondary Filters Bar -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                <div>
+                    <label class="block text-xs font-semibold text-amber-200 mb-1.5">តម្រៀបតាមកាលបរិច្ឆេទ</label>
+                    <select id="filterSort" onchange="renderActivityTimeline()" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-amber-500/40 text-white font-bold text-xs focus:outline-none focus:ring-2 focus:ring-amber-400 cursor-pointer">
+                        <option value="newest">⏱️ ថ្មីបំផុត ទៅ ចាស់បំផុត</option>
+                        <option value="oldest">⏳ ចាស់បំផុត ទៅ ថ្មីបំផុត</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-amber-200 mb-1.5">ស្វែងរកសកម្មភាព</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-xs text-amber-400/70"></i>
+                        <input type="text" id="filterSearch" oninput="renderActivityTimeline()" placeholder="វាយស្វែងរកចំណងជើង ឬខ្លឹមសារ..." class="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-900 border border-amber-500/40 text-xs text-white focus:outline-none focus:ring-2 focus:ring-amber-400">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timeline / Activity Cards Grid -->
+        <div id="activityTimelineContainer" class="space-y-4">
+            <!-- Dynamic Activity Cards rendered here -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyNotice" class="gold-card rounded-3xl p-12 text-center hidden space-y-3">
+            <div class="w-16 h-16 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30 flex items-center justify-center mx-auto text-2xl">
+                <i class="fa-solid fa-folder-open"></i>
+            </div>
+            <h3 class="text-base font-bold text-white">មិនទាន់មានកំណត់ត្រាសកម្មភាពនៅឡើយទេសម្រាប់ផ្នែកនេះ</h3>
+            <p class="text-xs text-slate-400 max-w-md mx-auto">
+                សូមចុចប៊ូតុង «កត់ត្រាថ្មី» នៅផ្នែកខាងលើ ដើម្បីចាប់ផ្តើមបញ្ចូលសកម្មភាពថ្មី។
+            </p>
+        </div>
+
+    </main>
+
+    <!-- Modal 1: Add / Edit Activity -->
+    <div id="activityModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
+        <div class="gold-card border border-amber-400/50 rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-amber-500/20 pb-3">
+                <h3 id="modalTitle" class="text-base font-bold text-amber-300 flex items-center gap-2">
+                    <i class="fa-solid fa-pen-nib"></i> កត់ត្រាសកម្មភាពថ្មី
+                </h3>
+                <button onclick="closeActivityModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <form id="activityForm" onsubmit="handleSaveActivity(event)" class="space-y-4 text-xs">
+                <input type="hidden" id="editActivityId">
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    <div>
+                        <label class="block text-amber-200 font-semibold mb-1">ជ្រើសរើសផ្នែក (Department) <span class="text-rose-400">*</span></label>
+                        <select id="inputDept" required class="w-full px-3.5 py-3 rounded-xl bg-black/60 border border-amber-500/40 text-amber-300 font-bold focus:outline-none focus:ring-2 focus:ring-amber-400">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-amber-200 font-semibold mb-1">កាលបរិច្ឆេទកើតហេតុ <span class="text-rose-400">*</span></label>
+                        <input type="date" id="inputDate" required class="w-full px-3.5 py-3 rounded-xl bg-black/60 border border-amber-500/40 text-amber-300 font-bold focus:outline-none focus:ring-2 focus:ring-amber-400">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-amber-200 font-semibold mb-1">ចំណងជើងសកម្មភាព <span class="text-rose-400">*</span></label>
+                    <input type="text" id="inputTitle" required placeholder="ឧ. រៀបចំប្រព័ន្ធតេស្តអនឡាញសម្រាប់ថ្នាក់ទី៨" class="w-full px-3.5 py-3 rounded-xl bg-black/60 border border-amber-500/40 text-white font-semibold focus:outline-none focus:ring-2 focus:ring-amber-400">
+                </div>
+
+                <div>
+                    <label class="block text-amber-200 font-semibold mb-1">รายละเอียด / ពិពណ៌នាសកម្មភាពដែលបានកើតឡើង <span class="text-rose-400">*</span></label>
+                    <textarea id="inputDesc" rows="4" required placeholder="សរសេរព័ត៌មានលម្អិតនៃសកម្មភាពដែលបានកើតឡើងរួចរាល់..." class="w-full px-3.5 py-3 rounded-xl bg-black/60 border border-amber-500/40 text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400 custom-scrollbar"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-amber-200 font-semibold mb-1">កម្រិតបន្ទាន់ / សារៈសំខាន់</label>
+                    <select id="inputPriority" class="w-full px-3.5 py-3 rounded-xl bg-black/60 border border-amber-500/40 text-white font-semibold focus:outline-none">
+                        <option value="normal">🟢 សកម្មភាពធម្មតា (Normal)</option>
+                        <option value="important">🟡 សកម្មភាពសំខាន់ (Important)</option>
+                        <option value="critical">🔴 សកម្មភាពបន្ទាន់/ស្នូល (Critical)</option>
+                    </select>
+                </div>
+
+                <div class="flex gap-2 pt-3">
+                    <button type="button" id="btnModalDelete" onclick="deleteActivityFromModal()" class="hidden px-4 py-3 rounded-xl border border-rose-800/70 bg-rose-950/50 hover:bg-rose-900/70 text-rose-400 font-bold transition" title="លុបកំណត់ត្រានេះ">
+                        <i class="fa-regular fa-trash-can"></i>
+                    </button>
+                    <button type="button" onclick="closeActivityModal()" class="flex-1 py-3 rounded-xl border border-slate-700 bg-slate-900 hover:bg-slate-800 text-slate-300 font-bold">បោះបង់</button>
+                    <button type="submit" class="flex-1 gold-button py-3 rounded-xl font-bold shadow-md">រក្សាទុកកំណត់ត្រា</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 2: Manage Departments (Add / Delete Category Sections) -->
+    <div id="manageDeptsModal" class="fixed inset-0 z-[60] bg-black/85 backdrop-blur-md hidden items-center justify-center p-4">
+        <div class="gold-card border border-amber-400/60 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4 max-h-[90vh] flex flex-col">
+            <div class="flex items-center justify-between border-b border-amber-500/20 pb-3 shrink-0">
+                <h3 class="text-base font-bold text-amber-300 flex items-center gap-2">
+                    <i class="fa-solid fa-sliders"></i> គ្រប់គ្រងប្រភេទផ្នែក (Departments)
+                </h3>
+                <button onclick="closeManageDeptsModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <!-- Add New Dept Form -->
+            <div class="space-y-1.5 shrink-0">
+                <label class="block text-[11px] font-semibold text-amber-200">បន្ថែមប្រភេទផ្នែកថ្មី៖</label>
+                <div class="flex gap-2">
+                    <input type="text" id="newDeptNameInput" onkeyup="if(event.key==='Enter') addNewDeptOption()" placeholder="ឧ. ការស្រាវជ្រាវ និងអភិវឌ្ឍន៍" class="flex-1 px-3 py-2.5 rounded-xl bg-black/60 border border-amber-500/40 text-white text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-amber-400">
+                    <button type="button" onclick="addNewDeptOption()" class="gold-button px-4 py-2.5 rounded-xl font-bold text-xs shrink-0 flex items-center gap-1">
+                        <i class="fa-solid fa-plus"></i> បន្ថែម
+                    </button>
+                </div>
+            </div>
+
+            <!-- Saved Depts List with Delete -->
+            <div class="flex-1 overflow-y-auto space-y-2 pr-1 custom-scrollbar" id="manageDeptsList">
+                <!-- Dynamic list rendered here -->
+            </div>
+
+            <div class="pt-2 border-t border-amber-500/20 flex justify-end shrink-0">
+                <button type="button" onclick="closeManageDeptsModal()" class="px-5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 transition">
+                    រួចរាល់ (បិទ)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="w-full border-t border-amber-500/10 py-3.5 text-center text-[11px] text-slate-500 bg-black/40">
+        ប្រព័ន្ធកត់ត្រាសកម្មភាពការងារ (Chronos Pro v2) • រៀបរៀងដោយ <span class="text-amber-400/80 font-semibold">លោកគ្រូ ចាន់ សុខហេង</span>
+    </footer>
+
+    <script>
+        // Connect to Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyDBTmY6YKLmpQ4mqAZm96P39IYtR4uQvtE",
+            authDomain: "my-planner-app-e9576.firebaseapp.com",
+            projectId: "my-planner-app-e9576",
+            storageBucket: "my-planner-app-e9576.firebasestorage.app",
+            messagingSenderId: "820137960838",
+            appId: "1:820137960838:web:df39f02662e2aff521b807",
+            measurementId: "G-9LCSDVH7C5"
+        };
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.firestore();
+
+        const ACTIVITIES_COLLECTION = 'chronos_activity_logs_v2';
+        const DEPTS_DOC_REF = db.collection('chronos_settings').doc('department_options');
+
+        const defaultDeptsList = [
+            "ការងារ",
+            "ការសិក្សា",
+            "ផ្ទាល់ខ្លួន",
+            "ការបង្រៀន និងគរុកោសល្យ",
+            "បច្ចេកវិទ្យា និង IT"
+        ];
+
+        let savedDepts = [...defaultDeptsList];
+        let allActivities = [];
+        let activeDeptFilter = 'all';
+
+        window.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('inputDate').value = new Date().toISOString().split('T')[0];
+            listenToDepartments();
+            listenToActivities();
+        });
+
+        // ================= DEPARTMENTS SYNC (FIREBASE) =================
+        function listenToDepartments() {
+            DEPTS_DOC_REF.onSnapshot(async doc => {
+                if (!doc.exists) {
+                    await DEPTS_DOC_REF.set({ depts: defaultDeptsList });
+                    savedDepts = [...defaultDeptsList];
+                } else {
+                    const data = doc.data();
+                    savedDepts = Array.isArray(data.depts) && data.depts.length > 0
+                        ? data.depts
+                        : [...defaultDeptsList];
+                }
+                renderDeptTabs();
+                populateModalDeptSelect();
+                renderManageDeptsList();
+            }, err => {
+                console.error("Dept sync error:", err);
+            });
+        }
+
+        function getAllMergedDepts() {
+            const fromLogs = allActivities.map(a => (a.dept || '').trim()).filter(Boolean);
+            const merged = [...savedDepts];
+            fromLogs.forEach(d => {
+                if (!merged.includes(d)) merged.push(d);
+            });
+            return merged;
+        }
+
+        function renderDeptTabs() {
+            const container = document.getElementById('deptTabsContainer');
+            if (!container) return;
+            const depts = getAllMergedDepts();
+
+            let html = `
+                <button onclick="setDeptFilter('all')" class="px-3.5 py-2 rounded-xl text-xs font-bold transition shrink-0 ${activeDeptFilter === 'all' ? 'gold-button shadow-md' : 'bg-slate-900/80 hover:bg-slate-800 text-slate-300 border border-amber-500/30'}">
+                    🌐 ទាំងអស់ (${allActivities.length})
+                </button>
+            `;
+
+            depts.forEach(d => {
+                const count = allActivities.filter(a => (a.dept || '').trim() === d).length;
+                const isActive = (activeDeptFilter === d);
+                html += `
+                    <button onclick="setDeptFilter('${d.replace(/'/g, "\\'")}')" class="px-3.5 py-2 rounded-xl text-xs font-bold transition shrink-0 ${isActive ? 'gold-button shadow-md' : 'bg-slate-900/80 hover:bg-slate-800 text-slate-300 border border-amber-500/30'}">
+                        📁 ${d} (${count})
+                    </button>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function setDeptFilter(dept) {
+            activeDeptFilter = dept;
+            renderDeptTabs();
+            renderActivityTimeline();
+        }
+
+        function populateModalDeptSelect() {
+            const selectEl = document.getElementById('inputDept');
+            if (!selectEl) return;
+            const depts = getAllMergedDepts();
+            selectEl.innerHTML = depts.map(d => `<option value="${d}">${d}</option>`).join('');
+        }
+
+        function openManageDeptsModal() {
+            renderManageDeptsList();
+            document.getElementById('manageDeptsModal').classList.remove('hidden');
+            document.getElementById('manageDeptsModal').classList.add('flex');
+        }
+
+        function closeManageDeptsModal() {
+            document.getElementById('manageDeptsModal').classList.add('hidden');
+            document.getElementById('manageDeptsModal').classList.remove('flex');
+        }
+
+        function renderManageDeptsList() {
+            const listEl = document.getElementById('manageDeptsList');
+            if (!listEl) return;
+            const depts = getAllMergedDepts();
+
+            listEl.innerHTML = depts.map(d => `
+                <div class="p-2.5 rounded-xl border border-white/10 bg-black/40 flex items-center justify-between gap-2">
+                    <span class="text-xs font-semibold text-slate-100 flex-1 truncate">📁 ${d}</span>
+                    <button type="button" onclick="deleteDeptOption('${d.replace(/'/g, "\\'")}')" title="លុបផ្នែកនេះ" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-rose-500/30 text-rose-400 flex items-center justify-center text-xs transition shrink-0">
+                        <i class="fa-regular fa-trash-can"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        async function addNewDeptOption() {
+            const inp = document.getElementById('newDeptNameInput');
+            const val = inp.value.trim();
+            if (!val) return;
+            const merged = getAllMergedDepts();
+            if (!merged.includes(val)) {
+                savedDepts = [...merged, val];
+                await DEPTS_DOC_REF.set({ depts: savedDepts });
+            }
+            inp.value = '';
+            renderManageDeptsList();
+        }
+
+        async function deleteDeptOption(deptName) {
+            if (!confirm(`តើលោកគ្រូចង់លុបផ្នែក «${deptName}» ចេញពីបញ្ជីមែនទេ?`)) return;
+            const merged = getAllMergedDepts();
+            savedDepts = merged.filter(d => d !== deptName);
+            await DEPTS_DOC_REF.set({ depts: savedDepts });
+            renderManageDeptsList();
+        }
+
+        // ================= ACTIVITIES SYNC (FIREBASE) =================
+        function listenToActivities() {
+            db.collection(ACTIVITIES_COLLECTION)
+                .onSnapshot(async snapshot => {
+                    if (snapshot.empty) {
+                        const batch = db.batch();
+                        const defaultStarters = [
+                            { dept: "ការសិក្សា", date: "2026-11-16", title: "រៀបចំផែនការប្រឡងសលាកប័ត្រថ្នាក់ទី៨", desc: "បានព្រីនវិញ្ញាសាគណិតវិទ្យា និងរៀបចំកាលវិភាគប្រឡងសម្រាប់សិស្សានុសិស្ស។", priority: "important", createdAt: new Date().toISOString() },
+                            { dept: "ការងារ", date: "2026-11-17", title: "បង្កើតប្រព័ន្ធតេស្តអនឡាញ MathLink Hub Pro", desc: "ដាក់ឱ្យដំណើរការប្រព័ន្ធតេស្តគ្រប់មុខវិជ្ជាគណិតវិទ្យាថ្នាក់ទី៨ លើ Cloud។", priority: "critical", createdAt: new Date().toISOString() },
+                            { dept: "ផ្ទាល់ខ្លួន", date: "2026-11-18", title: "ថែទាំទೇហទំព័រ និងពិនិត្យដ្រាយឺតសៀវភៅ", desc: "រៀបចំឯកសារ PDF បង្រៀន LaTeX និងកិច្ចការផ្ទះ។", priority: "normal", createdAt: new Date().toISOString() }
+                        ];
+                        defaultStarters.forEach(item => {
+                            const ref = db.collection(ACTIVITIES_COLLECTION).doc();
+                            batch.set(ref, item);
+                        });
+                        await batch.commit();
+                        return;
+                    }
+
+                    allActivities = [];
+                    snapshot.forEach(doc => {
+                        allActivities.push({ id: doc.id, ...doc.data() });
+                    });
+
+                    renderDeptTabs();
+                    populateModalDeptSelect();
+                    renderActivityTimeline();
+                }, err => {
+                    console.error("Activities sync error:", err);
+                });
+        }
+
+        function renderActivityTimeline() {
+            const container = document.getElementById('activityTimelineContainer');
+            const emptyNotice = document.getElementById('emptyNotice');
+            const sortVal = document.getElementById('filterSort').value;
+            const searchVal = document.getElementById('filterSearch').value.toLowerCase().trim();
+
+            container.innerHTML = '';
+            let filtered = [...allActivities];
+
+            if (activeDeptFilter !== 'all') {
+                filtered = filtered.filter(a => (a.dept || '').trim() === activeDeptFilter);
+            }
+            if (searchVal) {
+                filtered = filtered.filter(a => 
+                    (a.title || '').toLowerCase().includes(searchVal) ||
+                    (a.desc || '').toLowerCase().includes(searchVal) ||
+                    (a.dept || '').toLowerCase().includes(searchVal) ||
+                    (a.date || '').toLowerCase().includes(searchVal)
+                );
+            }
+
+            filtered.sort((a, b) => {
+                const dateA = a.date || '';
+                const dateB = b.date || '';
+                if (sortVal === 'newest') {
+                    return dateB.localeCompare(dateA);
+                } else {
+                    return dateA.localeCompare(dateB);
+                }
+            });
+
+            // Update stats
+            document.getElementById('statTotal').innerText = allActivities.length;
+            const uniqueDeptsCount = Array.from(new Set(allActivities.map(a => (a.dept || '').trim()))).filter(Boolean).length;
+            document.getElementById('statDepts').innerText = uniqueDeptsCount;
+            const todayStr = new Date().toISOString().split('T')[0];
+            const todayCount = allActivities.filter(a => a.date === todayStr).length;
+            document.getElementById('statToday').innerText = todayCount;
+
+            if (filtered.length === 0) {
+                emptyNotice.classList.remove('hidden');
+                return;
+            } else {
+                emptyNotice.classList.add('hidden');
+            }
+
+            filtered.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "gold-card rounded-3xl p-5 sm:p-6 space-y-3 transition-all duration-300 relative group";
+
+                let priorityBadge = '';
+                if (item.priority === 'critical') {
+                    priorityBadge = `<span class="px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30 text-[10px] font-bold"><i class="fa-solid fa-circle-exclamation mr-1"></i>បន្ទាន់/ស្នូល</span>`;
+                } else if (item.priority === 'important') {
+                    priorityBadge = `<span class="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30 text-[10px] font-bold"><i class="fa-solid fa-star mr-1"></i>សំខាន់</span>`;
+                } else {
+                    priorityBadge = `<span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold"><i class="fa-solid fa-check mr-1"></i>ធម្មតា</span>`;
+                }
+
+                let formattedDate = item.date;
+                try {
+                    const dObj = new Date(item.date);
+                    if (!isNaN(dObj)) {
+                        formattedDate = dObj.toLocaleDateString('km-KH', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' });
+                    }
+                } catch(e) {}
+
+                card.innerHTML = `
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-amber-500/15 pb-3">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="px-3 py-1 rounded-xl bg-amber-500/15 text-amber-300 font-bold text-xs border border-amber-500/30">
+                                <i class="fa-solid fa-folder-open mr-1.5"></i>${item.dept}
+                            </span>
+                            ${priorityBadge}
+                        </div>
+                        <div class="flex items-center justify-between sm:justify-end gap-3 text-xs text-amber-200/80 font-mono">
+                            <span><i class="fa-regular fa-calendar-days mr-1.5 text-amber-400"></i>${formattedDate}</span>
+                            <div class="flex items-center gap-1">
+                                <button onclick="openEditActivityModal('${item.id}')" title="កែប្រែកំណត់ត្រា" class="w-7 h-7 rounded-lg bg-slate-900 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center justify-center text-xs transition">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                                <button onclick="deleteActivity('${item.id}', '${(item.title || '').replace(/'/g, "\\'")}')" title="លុបកំណត់ត្រា" class="w-7 h-7 rounded-lg bg-slate-900 hover:bg-rose-500/20 text-rose-400 border border-rose-800/50 flex items-center justify-center text-xs transition">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-1.5 pt-1">
+                        <h3 class="font-bold text-base sm:text-lg text-white group-hover:text-amber-300 transition-colors">
+                            ${item.title}
+                        </h3>
+                        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed whitespace-pre-line">
+                            ${item.desc}
+                        </p>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        function openActivityModal() {
+            document.getElementById('editActivityId').value = '';
+            document.getElementById('activityForm').reset();
+            document.getElementById('inputDate').value = new Date().toISOString().split('T')[0];
+            populateModalDeptSelect();
+            document.getElementById('btnModalDelete').classList.add('hidden');
+            document.getElementById('modalTitle').innerHTML = '<i class="fa-solid fa-pen-nib"></i> កត់ត្រាសកម្មភាពថ្មី';
+            document.getElementById('activityModal').classList.remove('hidden');
+            document.getElementById('activityModal').classList.add('flex');
+        }
+
+        function openEditActivityModal(id) {
+            const item = allActivities.find(a => a.id === id);
+            if (!item) return;
+
+            populateModalDeptSelect();
+            document.getElementById('editActivityId').value = item.id;
+            document.getElementById('inputDept').value = item.dept;
+            document.getElementById('inputDate').value = item.date;
+            document.getElementById('inputTitle').value = item.title;
+            document.getElementById('inputDesc').value = item.desc;
+            document.getElementById('inputPriority').value = item.priority || 'normal';
+
+            document.getElementById('btnModalDelete').classList.remove('hidden');
+            document.getElementById('modalTitle').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> កែប្រែកំណត់ត្រាសកម្មភាព';
+            document.getElementById('activityModal').classList.remove('hidden');
+            document.getElementById('activityModal').classList.add('flex');
+        }
+
+        function closeActivityModal() {
+            document.getElementById('activityModal').classList.add('hidden');
+            document.getElementById('activityModal').classList.remove('flex');
+        }
+
+        async function handleSaveActivity(e) {
+            e.preventDefault();
+            const id = document.getElementById('editActivityId').value;
+            const dept = document.getElementById('inputDept').value.trim();
+            const date = document.getElementById('inputDate').value;
+            const title = document.getElementById('inputTitle').value.trim();
+            const desc = document.getElementById('inputDesc').value.trim();
+            const priority = document.getElementById('inputPriority').value;
+
+            if (!dept || !date || !title || !desc) return;
+
+            const payload = {
+                dept, date, title, desc, priority,
+                updatedAt: new Date().toISOString()
+            };
+
+            try {
+                if (id) {
+                    await db.collection(ACTIVITIES_COLLECTION).doc(id).update(payload);
+                } else {
+                    payload.createdAt = new Date().toISOString();
+                    await db.collection(ACTIVITIES_COLLECTION).add(payload);
+                }
+                closeActivityModal();
+            } catch (err) {
+                console.error("Save activity error:", err);
+                alert("មានបញ្ហាក្នុងការរក្សាទុកសកម្មភាព!");
+            }
+        }
+
+        async function deleteActivityFromModal() {
+            const id = document.getElementById('editActivityId').value;
+            const title = document.getElementById('inputTitle').value;
+            if (!id) return;
+            if (!confirm(`តើលោកគ្រូពិតជាចង់លុបកំណត់ត្រា «${title}» ចេញមែនទេ?`)) return;
+            try {
+                await db.collection(ACTIVITIES_COLLECTION).doc(id).delete();
+                closeActivityModal();
+            } catch (err) {
+                console.error("Delete error:", err);
+            }
+        }
+
+        async function deleteActivity(id, title) {
+            if (!confirm(`តើលោកគ្រូពិតជាចង់លុបកំណត់ត្រា «${title}» ចេញមែនទេ?`)) return;
+            try {
+                await db.collection(ACTIVITIES_COLLECTION).doc(id).delete();
+            } catch (err) {
+                console.error("Delete error:", err);
+            }
+        }
+    </script>
+</body>
+</html>
